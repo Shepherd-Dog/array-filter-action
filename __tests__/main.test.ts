@@ -1,27 +1,42 @@
-import {wait} from '../src/wait'
 import * as process from 'process'
-import * as cp from 'child_process'
-import * as path from 'path'
+import * as core from '@actions/core'
+import * as main from '../src/main'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
+test('input provided for `arrayToFilter` that is not a JSON array', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = 'not a JSON array'
+
+  const setFailedMock = jest.spyOn(core, 'setFailed')
+  await main.default()
+  expect(setFailedMock).toBeCalled()
 })
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
+test('input provided for `arrayToFilter` that is not a JSON array of strings', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '[1, 2, 3]'
+
+  const setFailedMock = jest.spyOn(core, 'setFailed')
+  await main.default()
+  expect(setFailedMock).toBeCalled()
 })
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execSync(`node ${ip}`, options).toString())
+test('array is not filtered when no filter is provided', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    '["test1.swift","test2.swift","test3.yml"]',
+  )
+})
+
+test('array is filtered by suffix when one is provided', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    '["test1.swift","test2.swift"]',
+  )
 })

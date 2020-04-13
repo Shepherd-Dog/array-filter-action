@@ -1,10 +1,17 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'David Brunow'
+description: 'Filters a JSON array of strings created by another action'
+author: 'Shepherd Dog'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  arrayToFilter:
+    description: 'the JSON array of strings that you want filtered'
+    required: true
+  suffixFilter:
+    description: 'the suffix string that you want to filter by'
+    default: 'none'
+    required: false
+outputs:
+  filteredArray:
+    description: 'the input array filtered by provided filters'
 runs:
   using: 'node12'
   main: 'dist/index.js'
