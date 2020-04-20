@@ -1,6 +1,8 @@
 name: 'David Brunow'
 description: 'Filters a JSON array of strings created by another action'
 author: 'Shepherd Dog'
+icon: settings
+color: purple
 inputs:
   arrayToFilter:
     description: 'the JSON array of strings that you want filtered'
