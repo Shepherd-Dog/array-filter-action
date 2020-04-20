@@ -1,8 +1,9 @@
-name: 'David Brunow'
+name: 'Array Filter Action'
 description: 'Filters a JSON array of strings created by another action'
-author: 'Shepherd Dog'
-icon: settings
-color: purple
+author: 'David Brunow <david@shep.dog>'
+branding:
+  icon: 'settings'
+  color: 'purple'
 inputs:
   arrayToFilter:
     description: 'the JSON array of strings that you want filtered'
