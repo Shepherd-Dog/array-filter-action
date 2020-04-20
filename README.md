@@ -30,7 +30,7 @@ jobs:
       - id: file_changes
         uses: trilom/file-changes-action@v1.2.3
       - id: array_filter
-        uses: shepherd-dog/array-filter-action@v1.2.3
+        uses: shepherd-dog/array-filter-action@v1.0.0
         with:
           arrayToFilter: steps.file_changes.outputs.files
           suffixFilter: ".swift"
