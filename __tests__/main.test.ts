@@ -40,3 +40,68 @@ test('array is filtered by suffix when one is provided', async() => {
     '["test1.swift","test2.swift"]',
   )
 })
+
+test('output is JSON array when configured to do so', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+  process.env['INPUT_OUTPUTFORMAT'] = 'json'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    '["test1.swift","test2.swift"]',
+  )
+})
+
+test('output is space delimited when configured to do so', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+  process.env['INPUT_OUTPUTFORMAT'] = 'space_delimited'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    'test1.swift test2.swift',
+  )
+})
+
+test('output is comma delimited when configured to do so', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+  process.env['INPUT_OUTPUTFORMAT'] = 'comma_delimited'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    'test1.swift,test2.swift',
+  )
+})
+
+test('space delimited output format is resilient to different cases', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+  process.env['INPUT_OUTPUTFORMAT'] = 'SPACE_delimited'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    'test1.swift test2.swift',
+  )
+})
+
+test('comma delimited output format is resilient to different cases', async() => {
+  process.env['INPUT_ARRAYTOFILTER'] = '["test1.swift", "test2.swift", "test3.yml"]'
+  process.env['INPUT_SUFFIXFILTER'] = '.swift'
+  process.env['INPUT_OUTPUTFORMAT'] = 'CoMmA_DeLiMiTeD'
+
+  const setOutputMock = jest.spyOn(core, 'setOutput')
+  await main.default()
+  expect(setOutputMock).toHaveBeenCalledWith(
+    'filteredArray',
+    'test1.swift,test2.swift',
+  )
+})

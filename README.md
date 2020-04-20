@@ -12,6 +12,10 @@ _Required_  - `string` - the array you want to filter formatted as a JSON string
 
 _Optional_  - `string` - the suffix you want to filter the array by, such as the file extension for an array of file names.
 
+### outputFormat
+
+_Optional_  - `string` - either "json", "space_delimited", or "comma_delimited". Defaults to "json"
+
 ## Outputs
 
 ### filteredArray
@@ -30,7 +34,7 @@ jobs:
       - id: file_changes
         uses: trilom/file-changes-action@v1.2.3
       - id: array_filter
-        uses: shepherd-dog/array-filter-action@v1.0.0
+        uses: Shepherd-Dog/array-filter-action@v1.0.0
         with:
           arrayToFilter: steps.file_changes.outputs.files
           suffixFilter: ".swift"

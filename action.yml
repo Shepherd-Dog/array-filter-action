@@ -8,6 +8,10 @@ inputs:
   arrayToFilter:
     description: 'the JSON array of strings that you want filtered'
     required: true
+  outputFormat:
+    description: 'the output format -- either "json", "space_delimited", or "comma_delimited"'
+    default: 'json'
+    required: false
   suffixFilter:
     description: 'the suffix string that you want to filter by'
     default: 'none'

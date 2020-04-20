@@ -2,9 +2,14 @@ import * as core from '@actions/core'
 
 async function run(): Promise<void> {
   try {
-    const inputArrayJSON: string = core.getInput('arrayToFilter', { required: true })
+    const inputArrayJSON: string|null = core.getInput('arrayToFilter', { required: true })
+    let outputFormat: string|null = core.getInput('outputFormat')
 
-    const suffixFilter: string = core.getInput('suffixFilter')
+    if (outputFormat == null) {
+      outputFormat = "json"
+    }
+
+    const suffixFilter: string|null = core.getInput('suffixFilter')
 
     const inputArray = JSON.parse(inputArrayJSON);
 
@@ -21,7 +26,15 @@ async function run(): Promise<void> {
       throw new TypeError("Array provided is not an array of strings")
     }
 
-    core.setOutput('filteredArray', JSON.stringify(filteredArray))
+    let output = JSON.stringify(filteredArray)
+
+    if (outputFormat.toLowerCase() == "space_delimited") {
+      output = filteredArray.join(" ")
+    } else if (outputFormat.toLowerCase() == "comma_delimited") {
+      output = filteredArray.join(",")
+    }
+
+    core.setOutput('filteredArray', output)
   } catch (error) {
     core.setFailed(error.message)
   }
