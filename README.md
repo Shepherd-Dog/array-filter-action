@@ -21,7 +21,6 @@ steps.array_filter.outputs.filteredArray - `string` - A filtered array formatted
 ## Example usage
 
 ```yaml
-# bare minimal
 name: changes
 on: push
 jobs:
